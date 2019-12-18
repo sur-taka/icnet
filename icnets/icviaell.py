@@ -64,6 +64,7 @@ for i in range(0,k-1):
 		cstr = cstr + "c"+str(i)+str(j)+": (x-" + str(m[0, 0]) + ")^2 + (y- " + str(m[1, 0]) + ")^2 = (" + str(r[0]) + ")^2"+"\n"
 op=lstr+mstr+cstr
 print(op)
+print(test)
 
 
 		
