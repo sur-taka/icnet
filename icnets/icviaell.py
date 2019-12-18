@@ -18,36 +18,52 @@ def mkl(a,b,k,s,st):
 	d=[]
 	for i in range(0,k):
 		c=s+i*st
-		n.append([cn(c,m),sn(c,m)])
-		d.append(a*dn(c,m))
+		sgn=1
+		if(i%2==1):
+			sgn=-1
+		n.append([sgn*cn(c,m),sgn*sn(c,m)])
+		d.append(sgn*a*dn(c,m))
 
 	return [n,d]
 
 def mcfn(n,d):
     M=[[n[0,0],n[0,1],-1],[n[1,0],n[1,1],-1],[n[2,0],n[2,1],-1]]
     MM=np.array(M)
-    print(MM)
     MI = la.inv(MM)
-    print(d)
     r = np.matmul(MI,d)
-    return [[r[0],r[1]], r[2]]
+    return [r[0:2], r[2]]
 
 a = int(input("Alpha: "))
 b = int(input("Beta: "))
 k = int(input("K: "))
-s = int(input("S1: "))
+s = float(input("S1: "))
 
 [nl,dl]=mkl(a,b,k,0,0.25)
 [nm,dm]=mkl(a,b,k,s,0.25)
-print(nl)
-print(dl)
-print(nm)
-print(dm)
-nn = np.array([nl[0],nl[1],nm[0]])
-dd = np.array([[dl[0]],[dl[1]],[dm[0]]])
-[m,r]=mcfn(nn,dd)
-print(m)
-print(r)
+
+nnl = np.array(nl)
+ddl = np.array(dl)
+nnm = np.array(nm)
+nnm = nnm*-1
+ddm = np.array(dm)
+ddm = ddm*-1
+lstr=""
+mstr=""
+for i in range(0,k):
+	lstr=lstr+"l"+str(i)+": "+str(nnl[i,0])+"*x + "+str(nnl[i,1])+"*y = "+str(ddl[i])+"\n"
+	mstr = mstr + "m" + str(i) + ": " + str(nnm[i, 0]) + "*x + " + str(nnm[i, 1]) + "*y = " + str(ddm[i])+ "\n"
+nn = np.array([nl[0],nl[1],nnm[0]])
+dd = np.array([[dl[0]],[dl[1]],[ddm[0]]])
+cstr=""
+for i in range(0,k-1):
+	for j in range(0,k-1):
+		if (i+j)%2==1: continue
+		nn = np.array([nl[i], nl[i+1], nnm[j]])
+		dd = np.array([[dl[i]], [dl[i+1]], [ddm[j]]])
+		[m,r]=mcfn(nn,dd)
+		cstr = cstr + "c"+str(i)+str(j)+": (x-" + str(m[0, 0]) + ")^2 + (y- " + str(m[1, 0]) + ")^2 = (" + str(r[0]) + ")^2"+"\n"
+op=lstr+mstr+cstr
+print(op)
 
 
 		
