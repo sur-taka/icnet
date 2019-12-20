@@ -37,9 +37,10 @@ a = int(input("Alpha: "))
 b = int(input("Beta: "))
 k = int(input("K: "))
 s = float(input("S1: "))
+st = float(input("Step: "))
 
-[nl,dl]=mkl(a,b,k,0,0.25)
-[nm,dm]=mkl(a,b,k,s,0.25)
+[nl,dl]=mkl(a,b,k,0,st)
+[nm,dm]=mkl(a,b,k,s,st)
 
 nnl = np.array(nl)
 ddl = np.array(dl)
