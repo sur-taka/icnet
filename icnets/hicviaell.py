@@ -8,7 +8,7 @@ def getnormal(a,f,t):
     e = sl.ellipj(t,(1/f)**2)
     s=e[0]
     d=e[2]
-    y=a/f*d
+    y=a/f*s
     x=a/f*s
     z=math.sqrt(x**2+y**2-1)
     return [x,y,z]
